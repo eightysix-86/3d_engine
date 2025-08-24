@@ -1,6 +1,6 @@
 #include <math.h>
 
-#include <../math/vector.h>
+#include "./vector.h"
 
 typedef enum { X, Y, Z } Axis;
 

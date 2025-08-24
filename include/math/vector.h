@@ -18,7 +18,6 @@
  * @field w The w component (1 for points, 0 for directions)
  * @field v Alternative array access (v[0]=x, v[1]=y, v[2]=z, v[3]=w)
  */
-
 typedef union {
     struct { float x, y, z, w; };
     float v[4];
