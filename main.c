@@ -1,7 +1,7 @@
 #include <SDL.h>
 #include <stdio.h>
 
-#include "./include/math/matrix.h"
+#include "math/matrix.h"
 
 #define WIN_WIDTH 800
 #define WIN_HEIGHT 600

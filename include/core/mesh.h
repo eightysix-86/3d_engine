@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include "../include/math/vector.h"
+#include "math/vector.h"
 
 /**
  * @brief A triplet of vertices index
@@ -31,5 +31,5 @@ typedef struct {
 
 Mesh mesh_generate(const Vector4* vertices, int vertex_count,
                    const Triangle* triangles, int triangle_count);
-                   
+
 void mesh_destroy(Mesh* mesh);

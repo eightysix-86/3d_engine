@@ -1,4 +1,4 @@
-#include ".././include/core/mesh.h"
+#include "core/mesh.h"
 
 Mesh mesh_generate(const Vector4* vertices, int vertex_count,
                    const Triangle* triangles, int triangle_count) 
