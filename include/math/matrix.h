@@ -1,12 +1,17 @@
-#include <math.h>
+#pragma once
 
-#include "./vector.h"
+#include <math.h>
+#include <stdio.h>
+
+#include "math/vector.h"
+
+#define MATRIX_N 4
 
 typedef enum { X, Y, Z } Axis;
 
 typedef struct Matrix
 {
-    float m[4][4];
+    float m[MATRIX_N][MATRIX_N];
 } Matrix;
 
 /**
@@ -21,6 +26,10 @@ typedef struct Matrix
  * of these.
  */
 Vector4 transform(Matrix M, Vector4 v);
+
+Matrix multiply(Matrix A, Matrix B);
+
+inline Vector4 extract_column(const Matrix *M, size_t j);
 
 /**
  * @brief Creates a 4x4 translation matrix for 3D transformations

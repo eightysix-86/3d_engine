@@ -1,4 +1,7 @@
-#include <../include/math/matrix.h>
+#include <stdio.h>
+#include <assert.h>
+
+#include "math/matrix.h"
 
 Vector4 transform(Matrix M, Vector4 v)
 {
@@ -8,6 +11,21 @@ Vector4 transform(Matrix M, Vector4 v)
     result.z = dot(array_to_vect(M.m[2]), v);
     result.w = dot(array_to_vect(M.m[3]), v);
     return result;
+}
+
+Matrix multiply(Matrix A, Matrix B) {
+    Matrix C;
+    for (size_t i = 0; i < MATRIX_N; i++) {
+        for (size_t j = 0; j < MATRIX_N; j++) {
+            C.m[i][j] = dot(array_to_vect(A.m[i]), extract_column(&B, j));
+        }
+    }
+    return C;
+}
+
+inline Vector4 extract_column(const Matrix *M, size_t j) {
+    assert(j < MATRIX_N);
+    return (Vector4){ M->m[0][j], M->m[1][j], M->m[2][j], M->m[3][j] };
 }
 
 Matrix translation_matrix(float tx, float ty, float tz)
@@ -35,16 +53,16 @@ Matrix rotation_matrix(float theta, Axis axis)
     case X:
     {
         Matrix m = {{{1, 0, 0, 0},
-                     {0, cos(theta), sin(theta), 0},
-                     {0, -sin(theta), cos(theta), 0},
+                     {0, cos(theta), -sin(theta), 0},
+                     {0, sin(theta), cos(theta), 0},
                      {0, 0, 0, 1}}};
         return m;
     }
     case Y:
     {
-        Matrix m = {{{cos(theta), 0, -sin(theta), 0},
+        Matrix m = {{{cos(theta), 0, sin(theta), 0},
                      {0, 1, 0, 0},
-                     {sin(theta), 0, cos(theta), 0},
+                     {-sin(theta), 0, cos(theta), 0},
                      {0, 0, 0, 1}}};
         return m;
     }
