@@ -32,6 +32,31 @@ typedef union {
     float v[3];
 } Vector3;
 
+#define add(a, b) _Generic((a), \
+    Vector3: add3, \
+    Vector4: add4 \
+)(a, b)
+
+#define subtract(a, b) _Generic((a), \
+    Vector3: subtract3, \
+    Vector4: subtract4 \
+)(a, b)
+
+#define dot(a, b) _Generic((a), \
+    Vector3: dot3, \
+    Vector4: dot4 \
+)(a, b)
+
+#define norm(a) _Generic((a), \
+    Vector3: norm3, \
+    Vector4: norm4 \
+)(a)
+
+#define normalize(a) _Generic((a), \
+    Vector3: normalize3, \
+    Vector4: normalize4 \
+)(a)
+
 static inline Vector4 add4(Vector4 v1, Vector4 v2) {
     return (Vector4){v1.x + v2.x, v1.y + v2.y, v1.z + v2.z, v1.w + v2.w};
 }
@@ -68,26 +93,16 @@ static inline float norm3(Vector3 v) {
     return sqrt(pow(v.x, 2) + pow(v.y, 2) + pow(v.z, 2));
 }
 
+static inline Vector4 normalize4(Vector4 v) {
+    float v_norm = norm(v);
+    return (Vector4){v.x / v_norm, v.y / v_norm, v.z / v_norm, v.w / v_norm};
+}
+
+static inline Vector3 normalize3(Vector3 v) {
+    float v_norm = norm(v);
+    return (Vector3){v.x / v_norm, v.y / v_norm, v.z / v_norm};
+}
+
 inline Vector4 array_to_vect(float arr[4]) {
     return (Vector4){arr[0], arr[1], arr[2], arr[3]};
 }
-
-#define add(a, b) _Generic((a), \
-    Vector3: add3, \
-    Vector4: add4 \
-)(a, b)
-
-#define subtract(a, b) _Generic((a), \
-    Vector3: subtract3, \
-    Vector4: subtract4 \
-)(a, b)
-
-#define dot(a, b) _Generic((a), \
-    Vector3: dot3, \
-    Vector4: dot4 \
-)(a, b)
-
-#define norm(a) _Generic((a), \
-    Vector3: norm3, \
-    Vector4: norm4 \
-)(a)
