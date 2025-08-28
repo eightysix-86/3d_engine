@@ -1,6 +1,6 @@
 # Compiler and flags
 CC = gcc
-CFLAGS = `sdl2-config --cflags` -Wall -Wextra -O2 -Iinclude -I/opt/homebrew/include/SDL2 -MMD -MP
+CFLAGS = `sdl2-config --cflags` -Wall -Wextra -Wno-missing-braces -O2 -Iinclude -I/opt/homebrew/include/SDL2 -MMD -MP
 LDFLAGS = `sdl2-config --libs` -L/opt/homebrew/lib -lm
 
 # Engine sources (exclude tests and main)
