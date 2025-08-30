@@ -2,6 +2,10 @@
 
 typedef enum { X, Y, Z } Axis;
 
+typedef struct Transform {
+    Vector3 translation, scale, rotation;
+} Transform;
+
 /**
  * @brief Creates a 4x4 translation matrix for 3D transformations
  *

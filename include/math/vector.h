@@ -32,6 +32,11 @@ typedef union {
     float v[3];
 } Vector3;
 
+#define neg(a) _Generic((a), \
+    Vector3: neg3, \
+    Vector4: neg4 \
+)(a)
+
 #define add(a, b) _Generic((a), \
     Vector3: add3, \
     Vector4: add4 \
@@ -56,6 +61,14 @@ typedef union {
     Vector3: normalize3, \
     Vector4: normalize4 \
 )(a)
+
+static inline Vector4 neg4(Vector4 v) {
+    return (Vector4){-v.x, -v.y, -v.z, -v.w};
+}
+
+static inline Vector3 neg3(Vector3 v) {
+    return (Vector3){-v.x, -v.y, -v.z};
+}
 
 static inline Vector4 add4(Vector4 v1, Vector4 v2) {
     return (Vector4){v1.x + v2.x, v1.y + v2.y, v1.z + v2.z, v1.w + v2.w};
