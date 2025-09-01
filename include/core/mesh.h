@@ -1,3 +1,5 @@
+#pragma once
+
 #include <stdlib.h>
 
 #include "math/vector.h"
@@ -29,7 +31,9 @@ typedef struct {
     int triangle_count;
 } Mesh;
 
-Mesh mesh_generate(const Vector4* vertices, int vertex_count,
+Mesh* mesh_generate(const Vector4* vertices, int vertex_count,
                    const Triangle* triangles, int triangle_count);
+
+Mesh* mesh_copy(const Mesh* src);
 
 void mesh_destroy(Mesh* mesh);

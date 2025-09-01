@@ -2,6 +2,9 @@
 
 #include "math.h"
 
+#define NULL_VECTOR3 (Vector3) {0.0f, 0.0f, 0.0f}
+#define NULL_VECTOR4 (Vector4) {0.0f, 0.0f, 0.0f, 0.0f}
+
 /**
  * @brief A 4D vector type for homogeneous coordinates in 3D graphics
  *
