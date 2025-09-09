@@ -9,8 +9,8 @@
 #define BLACK (Color){0, 0, 0, 255}
 #define RED (Color){255, 0, 0, 255}
 
-#define CAM_POS (Vector3){0.0f, 0.0f,  3.0f}
-#define CAM_TARGET NULL_VECTOR3
+#define CAM_POS (Vector3){0.0f, 0.0f, 5.0f}
+#define CAM_TARGET (Vector3){0.0f, 0.0f, 0.0f}
 #define CAM_UP (Vector3){0.0f, 1.0f,  0.0f}
 
 int main(int argc, char *argv[]) {
@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
 
     int running = 1;
     SDL_Event event;
-    Transform draw_transform = {NULL_VECTOR3, (Vector3){1.0f, 1.0f, 1.0f}, NULL_VECTOR3};
+    Transform draw_transform = NO_TRANSFORM;
     float rotation_speed = 60.0f * (M_PI / 180.0f); // 60°/s in radians
     float dt = 0.016f; // 16 ms frame (~60 FPS)
     float dx = rotation_speed * dt; // radians to rotate this frame
@@ -50,29 +50,41 @@ int main(int argc, char *argv[]) {
     };
 
     Mesh* cube = mesh_generate(cube_vertices, 8, cube_triangles, 12);
+
     Camera cam = {
-    .pos    = CAM_POS,   // placed a bit away from the origin
-    .target = CAM_TARGET,   // looking at the origin
-    .up     = CAM_UP    // Y axis is "up"
+        .pos    = CAM_POS,   // placed a bit away from the origin
+        .target = CAM_TARGET,   // looking at the origin
+        .up     = CAM_UP    // Y axis is "up"
     };
 
     draw_init(engine, cube, RED, cam);
+    
+    const double FPS = 60;
+    const int frameDelay = 1000 / FPS;
+    Uint32 frameStart, frameTime;
 
     while (running) {
+        frameStart = SDL_GetTicks();
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
                 running = 0;
             }
             if (event.type == SDL_KEYDOWN) {
                 switch (event.key.keysym.sym) {
-                    case SDLK_UP:    draw_transform.rotation.y -= dx; break;
-                    case SDLK_DOWN:  draw_transform.rotation.y += dx; break;
-                    case SDLK_LEFT:  draw_transform.rotation.x -= dx; break;
-                    case SDLK_RIGHT: draw_transform.rotation.x += dx; break;
+                    case SDLK_UP:    draw_transform.rotation.x -= dx; break;
+                    case SDLK_DOWN:  draw_transform.rotation.x += dx; break;
+                    case SDLK_LEFT:  draw_transform.rotation.y -= dx; break;
+                    case SDLK_RIGHT: draw_transform.rotation.y += dx; break;
                 }
             }
         }
+        draw_transform.rotation.y += dx;
         update_step(engine, draw_transform);
+        
+        frameTime = SDL_GetTicks() - frameStart;
+        if (frameDelay > frameTime) {
+            SDL_Delay(frameDelay - frameTime);
+        }
     }
 
     engine_destroy(engine);

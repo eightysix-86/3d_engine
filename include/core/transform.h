@@ -6,6 +6,8 @@ typedef struct Transform {
     Vector3 translation, scale, rotation;
 } Transform;
 
+#define NO_TRANSFORM (Transform){NULL_VECTOR3, (Vector3){1.0f, 1.0f, 1.0f}, NULL_VECTOR3}
+
 /**
  * @brief Creates a 4x4 translation matrix for 3D transformations
  *

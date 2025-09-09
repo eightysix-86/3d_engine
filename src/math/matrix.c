@@ -23,7 +23,7 @@ Matrix multiply(Matrix A, Matrix B) {
     return C;
 }
 
-inline Vector4 extract_column(const Matrix *M, size_t j) {
+Vector4 extract_column(const Matrix *M, size_t j) {
     assert(j < MATRIX_N);
     return (Vector4){ M->m[0][j], M->m[1][j], M->m[2][j], M->m[3][j] };
 }

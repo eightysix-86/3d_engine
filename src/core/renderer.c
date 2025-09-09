@@ -16,14 +16,14 @@ void draw_mesh(SDL_Renderer* sdl_renderer, const Draw* figure, const size_t scre
     SDL_SetRenderDrawColor(sdl_renderer, figure->color.r, figure->color.g, figure->color.b, figure->color.a);
 
     // Loop over triangles
-    for (int i = 0; i < figure->mesh->triangle_count; i += 1) {
-        int i0 = figure->mesh->triangles[i].vert[0];
-        int i1 = figure->mesh->triangles[i].vert[1];
-        int i2 = figure->mesh->triangles[i].vert[2];
+    for (int i = 0; i < figure->clipped_mesh->triangle_count; i += 1) {
+        int i0 = figure->clipped_mesh->triangles[i].vert[0];
+        int i1 = figure->clipped_mesh->triangles[i].vert[1];
+        int i2 = figure->clipped_mesh->triangles[i].vert[2];
 
-        Pixel v0 = get_pixel_pos(figure->mesh->vertices[i0], screen_w, screen_h);
-        Pixel v1 = get_pixel_pos(figure->mesh->vertices[i1], screen_w, screen_h);
-        Pixel v2 = get_pixel_pos(figure->mesh->vertices[i2], screen_w, screen_h);
+        Pixel v0 = get_pixel_pos(figure->clipped_mesh->vertices[i0], screen_w, screen_h);
+        Pixel v1 = get_pixel_pos(figure->clipped_mesh->vertices[i1], screen_w, screen_h);
+        Pixel v2 = get_pixel_pos(figure->clipped_mesh->vertices[i2], screen_w, screen_h);
 
         // Draw triangle edges
         SDL_RenderDrawLine(sdl_renderer, v0.x, v0.y, v1.x, v1.y);

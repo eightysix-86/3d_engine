@@ -25,23 +25,23 @@ Matrix rotation_matrix(float theta, Axis axis)
     case X:
     {
         Matrix m = {{{1, 0, 0, 0},
-                     {0, cos(theta), -sin(theta), 0},
-                     {0, sin(theta), cos(theta), 0},
+                     {0, cosf(theta), -sinf(theta), 0},
+                     {0, sinf(theta), cosf(theta), 0},
                      {0, 0, 0, 1}}};
         return m;
     }
     case Y:
     {
-        Matrix m = {{{cos(theta), 0, sin(theta), 0},
+        Matrix m = {{{cosf(theta), 0, sinf(theta), 0},
                      {0, 1, 0, 0},
-                     {-sin(theta), 0, cos(theta), 0},
+                     {-sinf(theta), 0, cosf(theta), 0},
                      {0, 0, 0, 1}}};
         return m;
     }
     case Z:
     {
-        Matrix m = {{{cos(theta), -sin(theta), 0, 0},
-                     {sin(theta), cos(theta), 0, 0},
+        Matrix m = {{{cosf(theta), -sinf(theta), 0, 0},
+                     {sinf(theta), cosf(theta), 0, 0},
                      {0, 0, 1, 0},
                      {0, 0, 0, 1}}};
         return m;

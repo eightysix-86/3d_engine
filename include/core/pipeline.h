@@ -14,4 +14,4 @@ typedef struct Projection {
     float fov, aspect_ratio, near, far;
 } Projection;
 
-void update_mesh(Mesh* figure, Transform transformations, Camera cam, Projection proj);
+void update_mesh(Mesh* figure, Mesh* clipped, const Transform transformations, const Camera cam, const Projection proj);

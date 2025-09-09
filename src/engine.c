@@ -4,7 +4,7 @@
 #define NEAR_PLANE 0.1f
 #define FAR_PLANE 100.0f
 
-Engine* engine_init(const char* title, int w, int h, Color background) {
+Engine* engine_init(const char* title, const int w, const int h, Color background) {
     Engine* engine = malloc(sizeof(Engine));
     if (!engine) return NULL;
 
@@ -39,14 +39,16 @@ Engine* engine_init(const char* title, int w, int h, Color background) {
 }
 
 void draw_init(Engine* engine, const Mesh* mesh, Color color, Camera cam) {
-    engine->draw->mesh = mesh_copy(mesh);
+    engine->figure = mesh;
+    engine->draw->clipped_mesh = mesh_copy(mesh);
     engine->draw->color = color;
     
     engine->projection = (Projection){
-    .fov          = FOV,
-    .aspect_ratio = engine->screen_w / engine->screen_h,
-    .near         = NEAR_PLANE,
-    .far          = FAR_PLANE};
+        .fov          = FOV,
+        .aspect_ratio = engine->screen_w / engine->screen_h,
+        .near         = NEAR_PLANE,
+        .far          = FAR_PLANE
+    };
 
     engine->camera = cam;
 }
@@ -58,7 +60,7 @@ void update_step(Engine* engine, Transform draw_transform) {
     SDL_SetRenderDrawColor(engine->sdl_renderer, 
         engine->draw->color.r, engine->draw->color.g, engine->draw->color.b, engine->draw->color.a); // draw color
 
-    update_mesh(engine->draw->mesh, draw_transform, engine->camera, engine->projection);
+    update_mesh(engine->figure, engine->draw->clipped_mesh, draw_transform, engine->camera, engine->projection);
     draw_mesh(engine->sdl_renderer, engine->draw, engine->screen_w, engine->screen_h);
     
     SDL_RenderPresent(engine->sdl_renderer);
@@ -69,7 +71,8 @@ void engine_destroy(Engine* engine) {
     SDL_DestroyWindow(engine->window);
     SDL_Quit();
 
-    mesh_destroy(engine->draw->mesh);
+    mesh_destroy(engine->figure);
+    mesh_destroy(engine->draw->clipped_mesh);
     free(engine->draw);
     free(engine);
 }

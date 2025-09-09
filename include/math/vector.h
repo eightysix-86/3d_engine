@@ -119,6 +119,6 @@ static inline Vector3 normalize3(Vector3 v) {
     return (Vector3){v.x / v_norm, v.y / v_norm, v.z / v_norm};
 }
 
-inline Vector4 array_to_vect(float arr[4]) {
+static inline Vector4 array_to_vect(float arr[4]) {
     return (Vector4){arr[0], arr[1], arr[2], arr[3]};
 }

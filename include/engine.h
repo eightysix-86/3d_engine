@@ -7,6 +7,7 @@ typedef struct {
     SDL_Window* window;
     SDL_Renderer* sdl_renderer;
 
+    Mesh* figure;
     Draw* draw;
 
     int screen_w;

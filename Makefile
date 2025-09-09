@@ -1,6 +1,6 @@
 # Compiler and flags
 CC = gcc
-CFLAGS = `sdl2-config --cflags` -Wall -Wextra -Wno-missing-braces -O2 -Iinclude -I/opt/homebrew/include/SDL2 -MMD -MP
+CFLAGS = `sdl2-config --cflags` -Wall -Wextra -Wno-missing-braces -O2 -g -Iinclude -I/opt/homebrew/include/SDL2 -MMD -MP
 LDFLAGS = `sdl2-config --libs` -L/opt/homebrew/lib -lm
 
 # Engine sources (exclude tests and main)
@@ -54,6 +54,13 @@ test_all: clean $(TEST_TARGETS)
 	done
 	@echo "✅ All tests passed!"
 
+# ------------------
+# Run a single test (usage: make test-pipeline)
+test-%: clean $(BUILD_DIR)/test_%
+	@echo "==> Running $<"
+	./$(BUILD_DIR)/test_$* || exit 1
+
+# ------------------
 # Each test links with engine objects + test framework
 $(BUILD_DIR)/%: tests/%.o tests/test_framework.o $(OBJ) | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)

@@ -11,7 +11,7 @@ typedef struct Color {
 } Color;
 
 typedef struct Draw { 
-    Mesh* mesh;
+    Mesh* clipped_mesh;
     Color color;
 } Draw;
 

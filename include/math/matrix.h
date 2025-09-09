@@ -27,4 +27,4 @@ Vector4 transform(Matrix M, Vector4 v);
 
 Matrix multiply(Matrix A, Matrix B);
 
-inline Vector4 extract_column(const Matrix *M, size_t j);
+Vector4 extract_column(const Matrix *M, size_t j);
