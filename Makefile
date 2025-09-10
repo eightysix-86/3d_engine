@@ -21,6 +21,12 @@ TEST_OBJ = $(TEST_SRC:.c=.o)
 TEST_DEP = $(TEST_SRC:.c=.d)
 TEST_TARGETS = $(patsubst tests/%.c,$(BUILD_DIR)/%,$(TEST_SRC))
 
+# Performance tests
+PERF_SRC = $(wildcard tests/performances/*.c)
+PERF_OBJ = $(PERF_SRC:.c=.o)
+PERF_DEP = $(PERF_SRC:.c=.d)
+PERF_TARGETS = $(patsubst tests/performances/%.c,$(BUILD_DIR)/perf_%,$(PERF_SRC))
+
 # ------------------
 # Default target: build engine
 all: $(TARGET)
@@ -66,10 +72,25 @@ $(BUILD_DIR)/%: tests/%.o tests/test_framework.o $(OBJ) | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 # ------------------
+# Build and run all performance tests
+perf: clean $(PERF_TARGETS)
+	@echo "Running all performance tests..."
+	@for t in $(PERF_TARGETS); do \
+		echo "==> Running $$t"; \
+		$$t || exit 1; \
+	done
+	@echo "✅ All performance tests completed!"
+
+# ------------------
+# Each performance test links with engine objects
+$(BUILD_DIR)/perf_%: tests/performances/%.o $(OBJ) | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
+# ------------------
 # Clean everything
 clean:
 	find . -name '*.o' -delete
 	find . -name '*.d' -delete
 	rm -rf $(BUILD_DIR)
 
-.PHONY: all clean run test
+.PHONY: all clean run test perf

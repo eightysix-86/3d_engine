@@ -3,7 +3,9 @@
 
 #include "engine.h"
 
-#define WIN_WIDTH 800
+#define FPS 0
+
+#define WIN_WIDTH 600
 #define WIN_HEIGHT 600
 
 #define BLACK (Color){0, 0, 0, 255}
@@ -59,12 +61,16 @@ int main(int argc, char *argv[]) {
 
     draw_init(engine, cube, RED, cam);
     
-    const double FPS = 60;
-    const int frameDelay = 1000 / FPS;
-    Uint32 frameStart, frameTime;
+    // const double FPS = 60;
+    // const int frameDelay = 1000 / FPS;
+    // Uint32 frameStart, frameTime;
+
+    Uint32 last_time = SDL_GetTicks();  // time at previous frame
+    int frames = 0;
+    float fps = 0.0f;
 
     while (running) {
-        frameStart = SDL_GetTicks();
+        // frameStart = SDL_GetTicks();
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
                 running = 0;
@@ -78,13 +84,30 @@ int main(int argc, char *argv[]) {
                 }
             }
         }
+
+        if (FPS) {
+            Uint32 current_time = SDL_GetTicks();
+            Uint32 elapsed = current_time - last_time;
+
+            frames++;
+
+            // Update FPS every second
+            if (elapsed >= 1000) {
+                fps = frames * 1000.0f / elapsed;
+                frames = 0;
+                last_time = current_time;
+
+                printf("FPS: %.2f\n", fps);
+            }
+        }
+
         draw_transform.rotation.y += dx;
         update_step(engine, draw_transform);
         
-        frameTime = SDL_GetTicks() - frameStart;
-        if (frameDelay > frameTime) {
-            SDL_Delay(frameDelay - frameTime);
-        }
+        // frameTime = SDL_GetTicks() - frameStart;
+        // if (frameDelay > frameTime) {
+        //     SDL_Delay(frameDelay - frameTime);
+        // }
     }
 
     engine_destroy(engine);
