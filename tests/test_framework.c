@@ -72,11 +72,55 @@ void run_test_matrix(const char* name, Matrix got, Matrix expected, TestResult* 
     result->name = name;
 }
 
-void print_summary(TestResult* results, int total) {
+void run_test_mesh(const char* name, Mesh* got, Mesh* expected, TestResult* result) {
+    printf("%s\n", name);
+    result->passed = 1;
+    int temp = 1;
+
+    // Test vertices
+    puts("  Test vertices");
+    for (size_t i = 0; i < expected->vertex_count; i++) {
+        if (got->vertices[i].w <= 0 ||
+            got->vertices[i].x < -got->vertices[i].w || got->vertices[i].x > got->vertices[i].w ||
+            got->vertices[i].y < -got->vertices[i].w || got->vertices[i].y > got->vertices[i].w ||
+            got->vertices[i].z < -got->vertices[i].w || got->vertices[i].z > got->vertices[i].w) {
+            printf("    ❌ Vertex %zu failed\n", i);
+            printf("        Got      = (%.5f, %.5f, %.5f, %.5f)\n", got->vertices[i].x, got->vertices[i].y, got->vertices[i].z, got->vertices[i].w);
+            result->passed = 0;
+            temp = 0;
+        }
+    }
+
+    if (temp)
+        puts("    ✅ Vertices passed");
+
+    temp = 1;
+    // Test triangles
+    puts("  Test triangles");
+    for (size_t i = 0; i < expected->triangle_count; i++) {
+        if ((got->triangles[i].vert[0] != expected->triangles[i].vert[0]) ||
+            (got->triangles[i].vert[1] != expected->triangles[i].vert[1]) ||
+            (got->triangles[i].vert[2] != expected->triangles[i].vert[2])) {
+            printf("    ❌ Triangle %zu failed\n", i);
+            printf("        Got      = (%d, %d, %d)\n", got->triangles[i].vert[0], got->triangles[i].vert[1], got->triangles[i].vert[2]);
+            printf("        Expected = (%d, %d, %d)\n", expected->triangles[i].vert[0], expected->triangles[i].vert[1], expected->triangles[i].vert[2]);
+            result->passed = 0;
+            temp = 0;
+        }
+    }
+
+    if (temp)
+        puts("    ✅ Triangles passed");
+
+    result->name = name;
+}
+
+void print_summary_f(const char* filename, TestResult* results, int total) {
     int passed = 0;
     for (int i = 0; i < total; i++) {
         if (results[i].passed) passed++;
     }
-    printf("\n=== TEST SUMMARY ===\n");
-    printf("Passed %d/%d tests\n", passed, total);
+
+    printf("\n=== TEST SUMMARY (%s) ===\n", filename);
+    printf("Passed %d/%d tests\n\n", passed, total);
 }

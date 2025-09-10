@@ -46,7 +46,7 @@ static Matrix view_matrix(const Camera camera) {
     return (Matrix) {{
         {cam.x.x, cam.x.y, cam.x.z, -dot(cam.x, camera.pos)},
         {cam.y.x, cam.y.y, cam.y.z, -dot(cam.y, camera.pos)},
-        {cam.z.x, cam.z.y,cam.z.z, dot(cam.z, camera.pos)},
+        {-cam.z.x, -cam.z.y, -cam.z.z, dot(cam.z, camera.pos)},
         {0.0f, 0.0f, 0.0f, 1.0f}
     }};
 }
