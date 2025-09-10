@@ -241,6 +241,7 @@ Potential areas for expansion:
 - Advanced camera controls (FPS, orbit)
 
 ## License
+This project is licensed under the MIT License - see [LICENSE](LICENSE) for details.
 
 ## Contributing
 
@@ -251,3 +252,5 @@ Potential areas for expansion:
 5. Submit a pull request
 
 ## Troubleshooting
+
+**⚠️ This project has only been tested on a Mac with ARM chip !**
