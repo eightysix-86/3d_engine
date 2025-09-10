@@ -196,6 +196,9 @@ The included demo (`main.c`) demonstrates:
 - **←/→**: Rotate around Y-axis
 - **ESC**: Exit application
 
+### Demo
+https://github.com/user-attachments/assets/148722b1-94e4-4cf8-8991-efc5bd1f3445
+
 ## Core Components
 
 ### Engine (`engine.c`)
