@@ -3,7 +3,7 @@
 
 #include "engine.h"
 
-#define FPS 0
+#define FPS 1
 
 #define WIN_WIDTH 600
 #define WIN_HEIGHT 600

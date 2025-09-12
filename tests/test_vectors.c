@@ -3,7 +3,7 @@
 #include "test_framework.h"
 #include "math/vector.h"
 
-#define TOTAL_TESTS 6
+#define TOTAL_TESTS 7
 
 int main(void) {
     Vector3 u1 = {3, 4, 5};

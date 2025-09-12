@@ -1,6 +1,6 @@
 # Compiler and flags
 CC = gcc
-CFLAGS = `sdl2-config --cflags` -Wall -Wextra -Wno-missing-braces -O2 -g -Iinclude -I/opt/homebrew/include/SDL2 -MMD -MP
+CFLAGS = `sdl2-config --cflags` -Wall -Wextra -Wno-missing-braces -O2 -g -fsanitize=address -Iinclude -I/opt/homebrew/include/SDL2 -MMD -MP
 LDFLAGS = `sdl2-config --libs` -L/opt/homebrew/lib -lm
 
 # Engine sources (exclude tests and main)
@@ -52,7 +52,7 @@ run: clean $(TARGET)
 
 # ------------------
 # Build and run all tests
-test_all: clean $(TEST_TARGETS)
+test: clean $(TEST_TARGETS)
 	@echo "Running all tests..."
 	@for t in $(TEST_TARGETS); do \
 		echo "==> Running $$t"; \
