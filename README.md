@@ -43,7 +43,7 @@ sudo dnf install SDL2-devel
 | `make` / `make all`  | Build the engine (default target).                                          |
 | `make run`           | Clean, build, and run the engine.                                           |
 | `make clean`         | Remove all build artifacts (`.o`, `.d`, and `build/` directory).            |
-| `make test_all`      | Build and run all tests from `tests/` (unit tests + demos).                 |
+| `make test`          | Build and run all tests from `tests/`.                 |
 | `make test-<name>`   | Build and run a specific test file (`tests/test_<name>.c`).                 |
 | `make perf`          | Build and run all performance tests from `tests/performances/`.             |
 
