@@ -185,15 +185,18 @@ int main(int argc, char *argv[]) {
 
 The included demo (`main.c`) demonstrates:
 
-- **Rotating Cube**: A red cube that continuously rotates
-- **Keyboard Controls**: 
-  - Arrow keys for manual rotation
-  - Automatic Y-axis rotation
+- **Rotating Cube**: A red cube that continuously rotates around XYZ-axes
 - **Perspective Projection**: 3D perspective with proper depth
 
 ### Controls
 - **↑/↓**: Rotate around X-axis
 - **←/→**: Rotate around Y-axis
+- **W/S**: Move along Z-axis
+- **A/D**: Move along X-axis
+- **Q/E**: Move along Y-axis
+- **Y/X**: Scale X-axis up/down
+- **C/V**: Scale Y-axis up/down
+- **B/N**: Scale Z-axis up/down
 - **ESC**: Exit application
 
 ### Demo

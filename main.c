@@ -3,7 +3,7 @@
 
 #include "engine.h"
 
-#define FPS 1
+#define SHOW_FPS 1
 
 #define WIN_WIDTH 600
 #define WIN_HEIGHT 600
@@ -15,19 +15,16 @@
 #define CAM_TARGET (Vector3){0.0f, 0.0f, 0.0f}
 #define CAM_UP (Vector3){0.0f, 1.0f,  0.0f}
 
+#define ROTATION_SPEED 45.0f // in degree
+#define TRANSLATION_SPEED 5.0f
+#define SCALE_SPEED 1.5f
+
 int main(int argc, char *argv[]) {
     Engine* engine = engine_init("3d engine", WIN_WIDTH, WIN_HEIGHT, BLACK);
     if (engine == NULL) {
         printf("Error during engine creation: %s\n", SDL_GetError());
         return 1;
     }
-
-    int running = 1;
-    SDL_Event event;
-    Transform draw_transform = NO_TRANSFORM;
-    float rotation_speed = 60.0f * (M_PI / 180.0f); // 60°/s in radians
-    float dt = 0.016f; // 16 ms frame (~60 FPS)
-    float dx = rotation_speed * dt; // radians to rotate this frame
 
     // 8 unique cube vertices
     Vector4 cube_vertices[8] = {
@@ -61,53 +58,74 @@ int main(int argc, char *argv[]) {
 
     draw_init(engine, cube, RED, cam);
     
-    // const double FPS = 60;
-    // const int frameDelay = 1000 / FPS;
-    // Uint32 frameStart, frameTime;
+    int running = 1;
+    SDL_Event event;
+    Transform draw_transform = NO_TRANSFORM;
+    float dr = 0.0f;
+    float ds = 0.0f;
+    float dz = 0.0f;
 
     Uint32 last_time = SDL_GetTicks();  // time at previous frame
+    Uint32 last_fps_time = SDL_GetTicks();
     int frames = 0;
     float fps = 0.0f;
 
     while (running) {
-        // frameStart = SDL_GetTicks();
+        Uint32 current_time = SDL_GetTicks();
+        Uint32 elapsed = current_time - last_time;
+        float delta_time = elapsed / 1000.0f;
+
+        dr = ROTATION_SPEED * (M_PI / 180.0f) * delta_time;
+        ds = TRANSLATION_SPEED * delta_time;
+        dz = SCALE_SPEED * delta_time;
+
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
                 running = 0;
             }
             if (event.type == SDL_KEYDOWN) {
                 switch (event.key.keysym.sym) {
-                    case SDLK_UP:    draw_transform.rotation.x -= dx; break;
-                    case SDLK_DOWN:  draw_transform.rotation.x += dx; break;
-                    case SDLK_LEFT:  draw_transform.rotation.y -= dx; break;
-                    case SDLK_RIGHT: draw_transform.rotation.y += dx; break;
+                    case SDLK_ESCAPE: running = 0; break;
+                    case SDLK_UP:    draw_transform.rotation.x -= dr; break;
+                    case SDLK_DOWN:  draw_transform.rotation.x += dr; break;
+                    case SDLK_LEFT:  draw_transform.rotation.y -= dr; break;
+                    case SDLK_RIGHT: draw_transform.rotation.y += dr; break;
+                    case SDLK_w:    draw_transform.translation.z -= ds; break;
+                    case SDLK_s:    draw_transform.translation.z += ds; break;
+                    case SDLK_d:    draw_transform.translation.x -= ds; break;
+                    case SDLK_a:    draw_transform.translation.x += ds; break;
+                    case SDLK_q:    draw_transform.translation.y -= ds; break;
+                    case SDLK_e:    draw_transform.translation.y += ds; break;
+                    case SDLK_y:    draw_transform.scale.x += dz; break;
+                    case SDLK_x:    draw_transform.scale.x -= dz; break;
+                    case SDLK_c:    draw_transform.scale.y += dz; break;
+                    case SDLK_v:    draw_transform.scale.y -= dz; break;
+                    case SDLK_b:    draw_transform.scale.z += dz; break;
+                    case SDLK_n:    draw_transform.scale.z -= dz; break;
                 }
             }
         }
 
-        if (FPS) {
-            Uint32 current_time = SDL_GetTicks();
-            Uint32 elapsed = current_time - last_time;
+        draw_transform.rotation.x += dr;
+        draw_transform.rotation.y += dr;
+        draw_transform.rotation.z += dr;
 
+        update_step(engine, draw_transform);
+        
+        // FPS calculation and display every second
+        if (SHOW_FPS) {
             frames++;
-
-            // Update FPS every second
-            if (elapsed >= 1000) {
-                fps = frames * 1000.0f / elapsed;
+            Uint32 fps_elapsed = current_time - last_fps_time;
+            if (fps_elapsed >= 1000) {
+                fps = frames * 1000.0f / fps_elapsed;
                 frames = 0;
-                last_time = current_time;
-
+                last_fps_time = current_time;
                 printf("FPS: %.2f\n", fps);
             }
         }
 
-        draw_transform.rotation.y += dx;
-        update_step(engine, draw_transform);
-        
-        // frameTime = SDL_GetTicks() - frameStart;
-        // if (frameDelay > frameTime) {
-        //     SDL_Delay(frameDelay - frameTime);
-        // }
+        // Update last_time every frame for smooth delta time
+        last_time = current_time;
     }
 
     engine_destroy(engine);
