@@ -200,7 +200,7 @@ The included demo (`main.c`) demonstrates:
 - **ESC**: Exit application
 
 ### Demo
-https://github.com/user-attachments/assets/148722b1-94e4-4cf8-8991-efc5bd1f3445
+https://github.com/user-attachments/assets/1af29484-0dfb-4eda-984d-be7122e6d386
 
 ## Core Components
 
