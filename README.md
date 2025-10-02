@@ -159,7 +159,6 @@ int main(int argc, char *argv[]) {
     int running = 1;
     SDL_Event event;
     Transform draw_transform = NO_TRANSFORM;
-    float rotation_speed = 0.01f;
 
     while (running) {
         // Handle input
@@ -171,7 +170,7 @@ int main(int argc, char *argv[]) {
 
         /* How you want to update your mesh (rotation, translation, etc) */
 
-        // 6️⃣ Render one frame
+        // 6️⃣ Render one frame with given transformations
         update_step(engine, draw_transform);
     }
 
